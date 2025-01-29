@@ -1,0 +1,22 @@
+services:
+  nextjs-app:
+    build: .
+    ports:
+      - "3000:3000"
+    networks:
+      - crud-network
+  db:
+    env_file: .env
+    image: postgres
+    ports:
+      - "${DB_PORT}:5432"
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - crud-network
+networks:
+  crud-network:
+    driver: bridge
