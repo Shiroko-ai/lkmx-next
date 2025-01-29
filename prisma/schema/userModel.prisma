@@ -1,0 +1,21 @@
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String
+  lastName String
+  gender Gender
+  age Int
+  password String
+  role Role
+}
+
+enum Gender {
+    FEMALE
+    MALE
+    OTHER
+}
+
+enum Role {
+    ADMIN
+    USER
+}
