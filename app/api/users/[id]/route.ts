@@ -2,7 +2,6 @@ import { Errors } from '@/constants/enums'
 import { userService } from '@/services/userService'
 import { NextRequest, NextResponse } from 'next/server'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function GET(req: NextRequest, { params }: any){
     const { id } = await params
     const result = await userService.getUser(id)
@@ -16,7 +15,6 @@ export async function GET(req: NextRequest, { params }: any){
 }
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function PUT(req: NextRequest, { params }: any){
     const { id } = await params
     const data = await req.json()
