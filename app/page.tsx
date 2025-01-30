@@ -33,7 +33,7 @@ export default function HomePage(){
         </tr>
         </THead>
         <tbody>
-        {data.map((user, index) => (
+        {data && data.map((user, index) => (
             <Tr key={index}>
                 <Td>{user.id}</Td>
                 <Td>{user.name}</Td>
@@ -54,5 +54,3 @@ export default function HomePage(){
     </Table>
     )
     }
-
-}
