@@ -7,11 +7,15 @@ export const userSchema = z.object({
         message: 'El nombre debe tener al menos 3 caracteres'
     }).max(100, {
         message: 'El nombre excede el límite de 100 caracteres'
+    }).regex(/^[a-zA-Z\s]*$/, {
+        message: 'El nombre solo puede contener letras'
     }),
     lastName: z.string().min(3, {
         message: 'El nombre debe tener al menos 3 caracteres'
     }).max(100, {
-        message: 'El nombre excede el límite de 100 caracteres'
+        message: 'El apellido excede el límite de 100 caracteres'
+    }).regex(/^[a-zA-Z\s]*$/, {
+        message: 'El apellido solo puede contener letras'
     }),
     gender: z.enum(['female', 'male', 'other'], {
         message: 'El género debe ser femenino, masculino u otro'

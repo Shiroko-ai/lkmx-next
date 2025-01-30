@@ -126,7 +126,7 @@ export const userService = {
                 email: data.email
             }
         })
-        if(existingUserEmail){
+        if(existingUserEmail && existingUserEmail.id !== userId){
             console.log('Email already exists')
             return Errors.ERROR_REPEATED
         }
