@@ -1,0 +1,32 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - lkmx-network
+  db:
+    env_file: .env
+    image: postgres
+    ports:
+      - "${DB_PORT}:5432"
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - lkmx-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+networks:
+  lkmx-network:
+    driver: bridge
+volumes:
+  postgres_data:

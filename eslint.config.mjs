@@ -11,6 +11,7 @@ const eslintConfig = [
     rules: {
         'quotes': ['error', 'single'],
         'object-curly-spacing': ['error', 'always'],
+        '@typescript-eslint/no-explicit-any' : 'off',
     }
   }),
 ]
