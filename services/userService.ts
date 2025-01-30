@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { userSchema } from '@/utils/zodSchemas';
 import bcrypt from 'bcrypt';
+import { Errors, SucessResponse } from '@/constants/enums';
 
 export const userService = {
     async getUsers(req: NextRequest) {
@@ -13,45 +14,43 @@ export const userService = {
         const users = await prisma.user.findMany({ select: { id: true, name: true, email:true } })
         return users
     },
+
+
+
     async getUser(id: string){
         try {
             console.log('Querying user with ID:', id)
             // Validations
-            if (!id) {
-              console.log('No data provided')
-              return  'ERROR_NO_DATA'
+            const validatedUserId = this.validateId(id)
+            if(typeof validatedUserId !== 'number'){
+                return validatedUserId
             }
-
-            const userId = typeof id === 'string' ? Number.parseInt(id, 10) : id
-            if (isNaN(userId)) {
-              console.log('Invalid ID format')
-              return 'INVALID_ID_FORMAT'
-            }
-
             const user = await prisma.user.findUnique({
               where: {
-                id: userId,
+                id: validatedUserId,
               },
             })
-
             if (!user) {
               console.log('User not found')
-              return 'USER_NOT_FOUND'
+              return Errors.USER_NOT_FOUND
             }
             user.role = user.role.toLowerCase() as Role
             user.gender = user.gender.toLowerCase() as Gender
             return user
           } catch (error) {
             console.error('Error fetching user:', error)
-            return 'INTERNAL_SERVER_ERROR'
+            return Errors.ERROR_UNKNOWN
           }
     },
+
+
+
     async createUser(data: Record<string,string>){
         console.log('user data', data)
         const validation = await userSchema.safeParse(data)
         if(!validation.success){
             console.log('Validation error:', validation.error)
-            return 'ERROR VALIDATION'
+            return Errors.ERROR_VALIDATION
         }
         const checkEmail = await prisma.user.findUnique({
             where: {
@@ -60,7 +59,7 @@ export const userService = {
         })
         if(checkEmail){
             console.log('Email already exists')
-            return 'ERROR REPEATED'
+            return Errors.ERROR_REPEATED
         }
         const salt = await bcrypt.genSalt(10)
         data.password = await bcrypt.hash(data.password, salt)
@@ -81,17 +80,20 @@ export const userService = {
         })
         if(!user){
             console.log('Error creating user')
-            return 'ERROR UNKNOWN'
+            return Errors.ERROR_UNKNOWN
         }
         else{
-        return 'SUCCESS'
+        return SucessResponse.SUCCESS
         }
     },
+
+
+
     async updateUser(id: string, data: Record<string,string>){
         const validation = await userSchema.safeParse(data)
         if(!validation.success){
             console.log('Validation error:', validation.error)
-            return 'ERROR VALIDATION'
+            return Errors.ERROR_VALIDATION
         }
         data.role = data.role.toUpperCase() as Role
         data.gender = data.gender.toUpperCase() as Gender
@@ -99,13 +101,13 @@ export const userService = {
             // Validations
             if (!id) {
                 console.log('No data provided')
-                return 'ERROR_NO_DATA'
+                return Errors.ERROR_NO_DATA
               }
 
               const userId = typeof id === 'string' ? Number.parseInt(id, 10) : id
               if (isNaN(userId)) {
                 console.log('Invalid ID format')
-                return 'INVALID_ID_FORMAT'
+                return Errors.INVALID_ID_FORMAT
               }
 
 
@@ -115,8 +117,16 @@ export const userService = {
             },
             data
         })
-        return user
+        if(user){
+        return SucessResponse.SUCCESS
+        }
+        else{
+            return Errors.ERROR_UNKNOWN
+        }
     },
+
+
+
     async getAnalytics(){
         const analytics = await prisma.user.findMany({ select: { role: true, gender: true } })
         const roleCount = {
@@ -147,6 +157,19 @@ export const userService = {
                 { name: 'Otro', value: genderCount.OTHER }
             ]
     }
+},
 
-}
+    validateId(id: string) {
+        if (!id) {
+            console.log('No data provided')
+            return Errors.ERROR_NO_DATA
+        }
+
+        const userId = Number.parseInt(id, 10)
+        if (isNaN(userId)) {
+            console.log('Invalid ID format')
+            return Errors.INVALID_ID_FORMAT
+        }
+        return userId
+    }
 }

@@ -1,3 +1,4 @@
+import { Errors } from '@/constants/enums';
 import { userService } from '@/services/userService';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -16,13 +17,13 @@ export async function POST(req: NextRequest){
     try{
     const result = await userService.createUser(data);
     console.log(result)
-    if(result === 'ERROR UNKNOWN'){
+    if(result === Errors.ERROR_UNKNOWN){
         return NextResponse.json({ 'error':'Un error inesperado ha ocurrido' }, { status: 500 })
     }
-    if(result === 'ERROR VALIDATION'){
+    if(result === Errors.ERROR_VALIDATION){
         return NextResponse.json({ 'error':'Datos inválidos' }, { status: 400 })
     }
-    if(result === 'ERROR REPEATED'){
+    if(result === Errors.ERROR_REPEATED){
         return NextResponse.json({ 'error':'El correo ya existe, elige otro' }, { status: 400 })
     }
     return NextResponse.json({ 'message': 'Usuario creado con éxito' }, { status: 200 })
