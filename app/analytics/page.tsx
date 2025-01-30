@@ -19,11 +19,14 @@ export default function Page() {
             return <ErrorMessage message='No se encontraron datos' />
         }
     return (
-        <div>
-        <h1>Analíticas</h1>
-        <div className='flex justify-center mt-20'>
-        <Chart data={data.roles} />
-        <Chart data={data.genders} />
+        <div className='w-full'>
+        <div className='container mx-auto'>
+        <h1 className='text-2xl font-bold'>Analíticas</h1>
+        <div className='flex justify-center mt-20 flex-col items-center'>
+        <Chart data={data.roles} title='Roles de usuario'/>
+        <div className='mt-10' />
+        <Chart data={data.genders} title='Generos'/>
+        </div>
         </div>
         </div>
     );

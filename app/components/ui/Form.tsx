@@ -21,7 +21,7 @@ export default function Form({ children, schema, submitButtonText, url, title, m
     const formControl = useZodForm(schema, url, method, redirectToHomePage)
 
     return (
-        <div className='shadow-lg p-5 rounded mx-auto max-w-[30%]'>
+        <div className='shadow-lg p-5 rounded mx-auto w-full md:w-1/3'>
         <h1 className='text-4xl mb-6'>{title}</h1>
         <FormProvider {...formControl}>
         <form onSubmit={formControl.onSubmit} className='flex flex-col gap-4'>
