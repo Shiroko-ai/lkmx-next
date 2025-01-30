@@ -19,8 +19,7 @@ export default function HomePage(){
         <ErrorMessage message={error} />
     )
 }
-    else{
-    if(!data) {
+    else if(data && data.length === 0) {
         return <div>Sin datos</div>
     }
     return(
@@ -55,4 +54,5 @@ export default function HomePage(){
     </Table>
     )
     }
+
 }
