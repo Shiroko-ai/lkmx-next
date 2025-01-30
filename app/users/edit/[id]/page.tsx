@@ -21,7 +21,7 @@ export default function Page(){
 }
     else{
         return(
-           <Form title="Actualizar usuario" schema={userSchema} submitButtonText='Actualizar' url={`/api/users/${params.id}`} method='PUT'>
+           <Form title="Actualizar usuario" schema={userSchema} submitButtonText='Actualizar' url={`/api/users/${params.id}`} method='PUT' redirectToHomePage={true}>
                    <Input name='email' label='Correo' placeholder='Correo' type='email' defaultValue={data?.email}/>
                    <Input name='name' label='Nombre' placeholder='Nombre' type='text' defaultValue={data?.name}/>
                    <Input name='lastName' label='Apellido' placeholder='Apellido' type='text' defaultValue={data?.lastName}/>

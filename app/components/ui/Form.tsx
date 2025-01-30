@@ -13,11 +13,12 @@ interface FormProps extends React.HTMLProps<HTMLFormElement> {
     url?: string
     title: string
     method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+    redirectToHomePage?: boolean
 }
 
 
-export default function Form({ children, schema, submitButtonText, url, title, method }: FormProps){
-    const formControl = useZodForm(schema, url, method)
+export default function Form({ children, schema, submitButtonText, url, title, method, redirectToHomePage }: FormProps){
+    const formControl = useZodForm(schema, url, method, redirectToHomePage)
 
     return (
         <div className='shadow-lg p-5 rounded mx-auto max-w-[30%]'>

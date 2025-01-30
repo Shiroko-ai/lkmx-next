@@ -1,14 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod'
-export default function useZodForm(schema: z.ZodType, url?: string, method?: string) {
+export default function useZodForm(schema: z.ZodType, url?: string, method?: string, redirectToHomePage?: boolean) {
+    const router = useRouter()
     const form = useForm(
         {
             resolver: zodResolver(schema)
         }
     )
     const handleSubmit = form.handleSubmit(async (values) => {
-
         if (!url || !method) {
             return
         }
@@ -21,13 +22,15 @@ export default function useZodForm(schema: z.ZodType, url?: string, method?: str
         })
         const data = await response.json()
         if(!response.ok){
-
             alert(data.error)
         }
         else{
             alert(data.message)
             form.reset()
+            if(redirectToHomePage){
+                router.push('/')
         }
+    }
         }
     )
 
