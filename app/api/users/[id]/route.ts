@@ -28,6 +28,9 @@ export async function PUT(req: NextRequest, { params }: any){
     else if(result === Errors.ERROR_NO_DATA || result === Errors.INVALID_ID_FORMAT){
         return NextResponse.json({ error: 'Usuario no encontrado o no proporcionado' }, { status: 404 })
     }
+    else if(result === Errors.ERROR_REPEATED){
+        return NextResponse.json({ error: 'El correo ya existe' }, { status: 400 })
+    }
     else if(result === Errors.ERROR_UNKNOWN){
         return NextResponse.json({ error: 'Error en la base de datos' }, { status: 500 })
     }

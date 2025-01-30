@@ -121,7 +121,15 @@ export const userService = {
                 return Errors.INVALID_ID_FORMAT
               }
 
-
+        const existingUserEmail = await prisma.user.findUnique({
+            where: {
+                email: data.email
+            }
+        })
+        if(existingUserEmail){
+            console.log('Email already exists')
+            return Errors.ERROR_REPEATED
+        }
         const user = await prisma.user.update({
             where: {
                 id: userId
