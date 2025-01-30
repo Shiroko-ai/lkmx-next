@@ -1,7 +1,7 @@
 # LKMX Next Test
 
 This is a technical preview using Next.js, Postgresql, Docker and Prisma as an ORM.
-## Getting Started
+## Getting Started with the dev container
 
 First, run docker using the Dockerfile.dev using:
 
@@ -13,7 +13,36 @@ This command will build and start all the development containers and set up the 
 ```bash
     http://localhost:3000
 ```
-Please make sure that there are not process on the port 3000
+> **_IMPORTANT:_**
+> 1. Please do not use the turbopack extension for npm run dev since there are a configuration in `next.config.ts` that can be used only in webpack!
+> 2. If you want to switch between build and dev mode please edit the next.config.ts file with the following configuration:
+> * For the dev mode:
+> ```ts
+>const nextConfig = {
+>   webpack: (config: any, { dev }: any) => {
+>     if (dev) {
+>        config.watchOptions = {
+>          poll: 1000,
+>          aggregateTimeout: 300,
+>        };
+>      }
+>      return config;
+>    },
+>  };
+>
+>  export default nextConfig;
+> ```
+> * For the build mode:
+> ```ts
+> import type { NextConfig } from 'next';
+> const nextConfig: NextConfig = {
+>  /* config options here */
+>  output: 'standalone'
+> };
+>
+> export default nextConfig;
+> ```
+> And last but not least, please make sure that there are not process on the port 3000
 
 ## Running Tests
 
