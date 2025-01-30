@@ -9,7 +9,6 @@ const config: Config = {
 preset: 'ts-jest',
   // All imported modules in your tests should be mocked automatically
   // automock: false,
-
   // Stop running tests after `n` failures
   // bail: 0,
 
@@ -195,6 +194,7 @@ preset: 'ts-jest',
 
   // Whether to use watchman for file crawling
   // watchman: true,
+  setupFilesAfterEnv: ['<rootDir>/singleton.ts'],
 };
 
 export default config;

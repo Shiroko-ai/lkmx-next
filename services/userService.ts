@@ -1,9 +1,9 @@
 import { Gender, Role } from '@prisma/client'
-import prisma from '@/lib/prisma';
+import prisma from '../lib/prisma';
 import { NextRequest } from 'next/server';
-import { userSchema } from '@/utils/zodSchemas';
+import { userSchema } from '../utils/zodSchemas';
 import bcrypt from 'bcrypt';
-import { Errors, SucessResponse } from '@/constants/enums';
+import { Errors, SucessResponse } from '../constants/enums';
 
 export const userService = {
     async getUsers(req: NextRequest) {
