@@ -11,7 +11,7 @@ export const userService = {
         // this log allows us to see the IP address of the request, which is useful to see
         // if the request is coming from the right place
         console.log(ip)
-        const users = await prisma.user.findMany({ select: { id: true, name: true, email:true } })
+        const users = await prisma.user.findMany({ select: { id: true, name: true, email:true }, orderBy: { id: 'asc' } })
         return users
     },
 
