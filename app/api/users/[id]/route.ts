@@ -19,7 +19,6 @@ export async function PUT(req: NextRequest, { params }: any){
     const { id } = await params
     const data = await req.json()
     const result = await userService.updateUser(id, data)
-    console.log(result)
     if(result === Errors.ERROR_VALIDATION){
         return NextResponse.json({ error: 'Datos no validos' }, { status: 400 })
     }

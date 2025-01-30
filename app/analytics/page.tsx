@@ -14,7 +14,6 @@ export default function Page() {
         return <ErrorMessage message={error} />
     }
     else{
-        console.log(data)
         if(!data){
             return <ErrorMessage message='No se encontraron datos' />
         }

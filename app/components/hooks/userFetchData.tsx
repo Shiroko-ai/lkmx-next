@@ -14,7 +14,6 @@ export default function useFetchData<T>(url: string) {
                     setError(result.error)
                     throw new Error(result.error)
                 }
-                console.log(result)
                 setData(result.message)
                 setError(null)
             }catch(error){
