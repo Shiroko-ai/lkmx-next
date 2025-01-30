@@ -5,6 +5,10 @@ services:
       - "3000:3000"
     networks:
       - crud-network
+    entrypoint: ["sh", "-c", "npx prisma migrate deploy --schema=./prisma/schema/db.prisma "]
+    depends_on:
+      - db
+
   db:
     env_file: .env
     image: postgres
@@ -20,6 +24,11 @@ services:
       - crud-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
 networks:
   crud-network:
     driver: bridge
