@@ -1,4 +1,4 @@
-import { Gender, Role, type User } from '@prisma/client'
+import { Gender, Role } from '@prisma/client'
 import prisma from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { userSchema } from '@/utils/zodSchemas';
@@ -7,12 +7,17 @@ import { Errors, SucessResponse } from '@/constants/enums';
 
 export const userService = {
     async getUsers(req: NextRequest) {
+        try{
         const ip = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0]
         // this log allows us to see the IP address of the request, which is useful to see
         // if the request is coming from the right place
         console.log(ip)
         const users = await prisma.user.findMany({ select: { id: true, name: true, email:true }, orderBy: { id: 'asc' } })
         return users
+        } catch (error) {
+            console.error('Error fetching users:', error)
+            return Errors.ERROR_UNKNOWN
+          }
     },
 
 
@@ -46,6 +51,7 @@ export const userService = {
 
 
     async createUser(data: Record<string,string>){
+        try{
         console.log('user data', data)
         const validation = await userSchema.safeParse(data)
         if(!validation.success){
@@ -85,11 +91,16 @@ export const userService = {
         else{
         return SucessResponse.SUCCESS
         }
+    } catch (error) {
+        console.error('Error creating user:', error)
+        return Errors.ERROR_UNKNOWN
+      }
     },
 
 
 
     async updateUser(id: string, data: Record<string,string>){
+        try{
         const validation = await userSchema.safeParse(data)
         if(!validation.success){
             console.log('Validation error:', validation.error)
@@ -123,11 +134,16 @@ export const userService = {
         else{
             return Errors.ERROR_UNKNOWN
         }
+    } catch (error) {
+        console.error('Error updating user:', error)
+        return Errors.ERROR_UNKNOWN
+      }
     },
 
 
 
     async getAnalytics(){
+        try{
         const analytics = await prisma.user.findMany({ select: { role: true, gender: true } })
         const roleCount = {
             ADMIN: 0,
@@ -156,6 +172,10 @@ export const userService = {
                 { name: 'Femenino', value: genderCount.FEMALE },
                 { name: 'Otro', value: genderCount.OTHER }
             ]
+    }
+}  catch (error) {
+    console.error('Error fetching analytics:', error)
+    return Errors.ERROR_UNKNOWN
     }
 },
 
