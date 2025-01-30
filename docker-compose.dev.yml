@@ -6,8 +6,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./prisma:/app/prisma
+      - ./node_modules/.prisma:/app/node_modules/.prisma
     networks:
       - lkmx-network
     entrypoint: ["sh", "-c", "npx prisma migrate deploy && npm run dev"]

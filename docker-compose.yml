@@ -3,9 +3,12 @@ services:
     build: .
     ports:
       - "3000:3000"
+    volumes:
+      - ./prisma:/app/prisma
+      - ./node_modules/.prisma:/app/node_modules/.prisma
     networks:
       - crud-network
-    entrypoint: ["sh", "-c", "npx prisma migrate deploy --schema=./prisma/schema/db.prisma "]
+    entrypoint: ["sh", "-c", "npx prisma migrate deploy && node server.js"]
     depends_on:
       - db
 
