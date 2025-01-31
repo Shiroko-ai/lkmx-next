@@ -11,6 +11,9 @@ export async function GET(req: NextRequest, { params }: any){
     else if(result === Errors.ERROR_UNKNOWN){
         return NextResponse.json({ error: 'Error en la base de datos' }, { status: 500 })
     }
+    else if(result === Errors.USER_NOT_FOUND){
+        return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 500 })
+    }
     return NextResponse.json({ message: result }, { status: 200 })
 }
 
@@ -31,5 +34,6 @@ export async function PUT(req: NextRequest, { params }: any){
     else if(result === Errors.ERROR_UNKNOWN){
         return NextResponse.json({ error: 'Error en la base de datos' }, { status: 500 })
     }
+
     return NextResponse.json({ message: 'Se actualizó el usuario con éxito' }, { status: 200 })
 }
